@@ -28,8 +28,8 @@ bigdata = pd.DataFrame(columns = column_headers)
 
 searched_list = old_bigdata["date"]
 
-# start_date = datetime(2010, 1, 1)
-start_date = datetime(2023, 10, 1)
+start_date = datetime(2010, 1, 1)
+# start_date = datetime(2023, 10, 1)
 end_date = datetime(2023, 11, 3)
 
 timerange = start_date-end_date
