@@ -38,7 +38,7 @@ filter_dict['goal_diff'] = np.arange(min_diff,max_diff+1,1)# + np.arange(-min_di
 st.sidebar.text(filter_dict['goal_diff'])
 @st.cache_data
 def load_filtered(filters: dict= filter_dict):
-    filtered_df = pd.DataFrame()
+    filtered_df =   
     for key, values in filters.items():
         selections = df_original[df_original[key].isin(values)]
         filtered_df = pd.concat([filtered_df, selections]).drop_duplicates()

@@ -13,7 +13,7 @@ column_headers = ['away_team','away_goals','home_team','home_goals','date']
 def update_csv(df: pd.DataFrame):
     with open(data_fp, 'w') as file:
         file.truncate(0) #NUKE IT        
-    print("printing")
+    df = df.sort_values("date")
     df.to_csv(data_fp,index=False)
 
 try:
@@ -28,9 +28,9 @@ bigdata = pd.DataFrame(columns = column_headers)
 
 searched_list = old_bigdata["date"]
 
-start_date = datetime(2010, 1, 1)
+start_date = datetime(1917, 12, 19)
 # start_date = datetime(2023, 10, 1)
-end_date = datetime(2023, 11, 3)
+end_date = datetime(2023, 11, 6)
 
 timerange = start_date-end_date
 already_searched = 0
@@ -38,7 +38,7 @@ already_searched = 0
 with tqdm(range(0, timerange.days),total=timerange.days,unit='days') as pbar:
     search_date = start_date
     while search_date <= end_date:
-        if searched_list.str.contains(search_date.strftime('%Y-%m-%d')).any():
+        if searched_list.str.contains(search_date.strftime('%Y-%m-%d')).any() or search_date.month in [7,8,9]:
             search_date += timedelta(days=1) # INCREMENT DAY
             pbar.update(1)
             already_searched+=1
@@ -49,8 +49,9 @@ with tqdm(range(0, timerange.days),total=timerange.days,unit='days') as pbar:
         year = search_date.year
         url = f"https://www.hockey-reference.com/boxscores/index.fcgi?month={month}&day={day}&year={year}"
         try:
-            response = requests.get(url, timeout=1)
-            soup = BeautifulSoup(response.content, 'html.parser')
+            time.sleep(np.random.rand()*2+2)
+            response = requests.get(url, timeout=5)
+            soup = BeautifulSoup(response.content, 'html.parser')            
             div_elements = soup.find_all('div', class_='game_summary')
             number_of_elements = len(div_elements)
             if number_of_elements==0:
